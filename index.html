@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Derek Baker</title>
+<meta name="description" content="Derek Baker, Associate Professor of Philosophy at the Frankfurt School of Finance &amp; Management. Metaethics, the philosophy of action, and bioethics.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23172c45'/%3E%3Cpath d='M23 9v46M23 25h32M23 37h32' stroke='%23c5a253' stroke-width='4' fill='none'/%3E%3C/svg%3E">
+<script>
+  document.documentElement.classList.add('js');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('boot');
+</script>
+<style>
+  /* ==========================================================
+     FONTS (all self-hosted in the fonts/ folder)
+     ========================================================== */
+  @font-face{ font-family:'TeX Gyre Schola'; src:url('fonts/texgyreschola-regular.woff2') format('woff2'), url('fonts/texgyreschola-regular.otf') format('opentype'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'TeX Gyre Schola'; src:url('fonts/texgyreschola-italic.woff2') format('woff2'), url('fonts/texgyreschola-italic.otf') format('opentype'); font-weight:400; font-style:italic; font-display:swap; }
+  @font-face{ font-family:'TeX Gyre Schola'; src:url('fonts/texgyreschola-bold.woff2') format('woff2'), url('fonts/texgyreschola-bold.otf') format('opentype'); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'TeX Gyre Schola'; src:url('fonts/texgyreschola-bolditalic.woff2') format('woff2'), url('fonts/texgyreschola-bolditalic.otf') format('opentype'); font-weight:700; font-style:italic; font-display:swap; }
+  @font-face{ font-family:'Geist Mono'; src:url('fonts/geistmono-regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'Geist Mono'; src:url('fonts/geistmono-medium.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+
+  /* Registered so the section colours can cross-fade */
+  @property --panel  { syntax:'<color>'; inherits:true; initial-value:transparent; }
+  @property --field-a{ syntax:'<color>'; inherits:true; initial-value:transparent; }
+  @property --field-b{ syntax:'<color>'; inherits:true; initial-value:transparent; }
+
+  /* ==========================================================
+     PALETTE: your ten colours, plus sapphire and vermilion
+     for Research and Teaching in Day mode
+     ========================================================== */
+  :root{
+    --teal:#125a4a;  --green:#12654a; --black:#151515; --cream:#f3e9d2; --paper:#fefdfa;
+    --gold:#c5a253;  --mist:#c4c7c5;  --navy:#172c45;  --indigo:#191745; --wine:#682d3c;
+    --sapphire:#2549b0; --vermilion:#c4472f;
+
+    --serif:'TeX Gyre Schola', Georgia, 'Times New Roman', serif;
+    --mono:'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --line:3px;                 /* thickness of the T */
+    --nav-pad-r:24px;
+    --pad-l:48px;
+    --pad-r:56px;
+    --bleed:min(96px, max(0px, (100vw - 980px) / 2));  /* how far the lines and panel run past the right edge */
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+
+  /* ---------- Day ---------- */
+  :root,
+  :root[data-theme="light"]{
+    color-scheme:light;
+    --bg:var(--paper);
+    --ink:var(--black);
+    --text:rgba(21,21,21,.86);
+    --soft:rgba(21,21,21,.56);
+    --faint:rgba(21,21,21,.36);
+    --structure:var(--navy);
+    --name:var(--navy);
+    --hover:var(--teal);
+    --hover-bg:rgba(18,90,74,.08);
+    --hairline:rgba(196,199,197,.9);
+    --dots:rgba(23,44,69,.14);
+    --readout:var(--navy);
+    --node:var(--gold);
+    --bead:var(--gold);
+    --link-hover:var(--teal);
+    --select:rgba(197,162,83,.35);
+    --focus:var(--teal);
+    --acc-about:var(--teal);
+    --acc-research:var(--sapphire);
+    --acc-teaching:var(--vermilion);
+    --acc-other:var(--green);
+    --acc-contact:var(--navy);
+  }
+
+  /* ---------- Night ---------- */
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:var(--black);
+    --ink:var(--cream);
+    --text:rgba(243,233,210,.86);
+    --soft:rgba(243,233,210,.6);
+    --faint:rgba(243,233,210,.38);
+    --structure:var(--gold);
+    --name:var(--cream);
+    --hover:var(--cream);
+    --hover-bg:rgba(18,90,74,.75);
+    --hairline:rgba(243,233,210,.2);
+    --dots:rgba(243,233,210,.08);
+    --readout:var(--gold);
+    --node:var(--black);
+    --bead:var(--cream);
+    --link-hover:var(--gold);
+    --select:rgba(197,162,83,.4);
+    --focus:var(--gold);
+    --acc-about:var(--gold);
+    --acc-research:var(--gold);
+    --acc-teaching:var(--gold);
+    --acc-other:var(--gold);
+    --acc-contact:var(--gold);
+  }
+
+  /* ---------- Section colours ----------
+     panel   = flat colour of the content area
+     field-a = glow coming off the corner of the T
+     field-b = secondary glow, bottom right                */
+  body[data-section="about"]   { --accent:var(--acc-about);    --panel:rgba(254,253,250,0);  --field-a:rgba(197,162,83,.18); --field-b:rgba(18,90,74,.05); }
+  body[data-section="research"]{ --accent:var(--acc-research); --panel:rgba(37,73,176,.05);  --field-a:rgba(37,73,176,.15);  --field-b:rgba(23,44,69,.06); }
+  body[data-section="teaching"]{ --accent:var(--acc-teaching); --panel:rgba(196,71,47,.05);  --field-a:rgba(196,71,47,.15);  --field-b:rgba(197,162,83,.10); }
+  body[data-section="other"]   { --accent:var(--acc-other);    --panel:rgba(18,101,74,.045); --field-a:rgba(18,101,74,.16);  --field-b:rgba(18,90,74,.06); }
+  body[data-section="contact"] { --accent:var(--acc-contact);  --panel:rgba(197,162,83,.08); --field-a:rgba(197,162,83,.28); --field-b:rgba(104,45,60,.06); }
+
+  body[data-section="impressum"]{ --accent:var(--acc-about); --panel:rgba(254,253,250,0); --field-a:rgba(197,162,83,.12); --field-b:rgba(18,90,74,.04); }
+  :root[data-theme="dark"] body[data-section="impressum"]{ --panel:var(--black); --field-a:rgba(197,162,83,.08); --field-b:rgba(23,44,69,.6); }
+  :root[data-theme="dark"] body[data-section="about"]   { --panel:var(--black);  --field-a:rgba(197,162,83,.10); --field-b:rgba(23,44,69,.75); }
+  :root[data-theme="dark"] body[data-section="research"]{ --panel:var(--indigo); --field-a:rgba(197,162,83,.10); --field-b:rgba(21,21,21,.5); }
+  :root[data-theme="dark"] body[data-section="teaching"]{ --panel:var(--wine);   --field-a:rgba(197,162,83,.14); --field-b:rgba(21,21,21,.5); }
+  :root[data-theme="dark"] body[data-section="other"]   { --panel:var(--green);  --field-a:rgba(197,162,83,.12); --field-b:rgba(21,21,21,.55); }
+  :root[data-theme="dark"] body[data-section="contact"] { --panel:var(--navy);   --field-a:rgba(197,162,83,.16); --field-b:rgba(21,21,21,.5); }
+
+  /* ==========================================================
+     BASE
+     ========================================================== */
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ overflow-x:hidden; scrollbar-gutter:stable; -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--serif);
+    overflow-x:clip;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    transition:--panel .7s var(--ease), --field-a .7s var(--ease), --field-b .7s var(--ease);
+  }
+  ::selection{ background:var(--select); }
+  :focus-visible{ outline:2px solid var(--focus); outline-offset:3px; border-radius:2px; }
+
+  .shell{
+    position:relative;
+    display:grid;
+    grid-template-columns:200px minmax(0,1fr);
+    grid-template-rows:auto auto 1fr;
+    max-width:980px;
+    margin:0 auto;
+    min-height:100vh;
+  }
+
+  /* ==========================================================
+     HEADER: Derek Baker — Page
+     ========================================================== */
+  header{ grid-column:2; grid-row:1; padding:64px var(--pad-l) 30px; }
+  h1{
+    margin:0;
+    font-weight:400;
+    font-size:clamp(32px, 4.3vw, 48px);
+    line-height:1.12;
+    letter-spacing:-.015em;
+    color:var(--name);
+  }
+  h1 .dash{ color:var(--faint); }
+  h1 .page{ position:relative; white-space:nowrap; }
+  #page-name{
+    display:inline-block;
+    font-style:italic;
+    color:var(--acc-about);
+    transition:opacity .18s ease, color .35s ease;
+  }
+  #page-name[data-sec="research"]{ color:var(--acc-research); }
+  #page-name[data-sec="teaching"]{ color:var(--acc-teaching); }
+  #page-name[data-sec="other"]{ color:var(--acc-other); }
+  #page-name[data-sec="contact"]{ color:var(--acc-contact); }
+  #page-name[data-sec="cv"]{ color:var(--soft); }
+  #page-name.previewing{ opacity:.42; }
+
+  .caret{
+    display:inline-block;
+    width:2px;
+    height:.74em;
+    margin-left:.14em;
+    vertical-align:-.04em;
+    background:var(--gold);
+    animation:caret 1.6s ease-in-out infinite;
+  }
+  @keyframes caret{ 0%,100%{ opacity:1; } 50%{ opacity:.12; } }
+
+  /* the caret sweeps across and "writes" the new word */
+  .page.scanning #page-name{ animation:scan-reveal .42s var(--ease) both; }
+  .page.scanning .caret{ animation:caret-sweep .42s var(--ease) both; box-shadow:0 0 12px 1px rgba(197,162,83,.8); }
+  @keyframes scan-reveal{ from{ clip-path:inset(-30% 100% -30% -15%); } to{ clip-path:inset(-30% -15% -30% -15%); } }
+  @keyframes caret-sweep{ from{ transform:translateX(calc(-1 * var(--w, 0px))); } to{ transform:none; } }
+
+  /* ==========================================================
+     THE T: two horizontal rules + the vertical spine
+     ========================================================== */
+  .rules{
+    grid-column:2;
+    grid-row:2;
+    width:calc(100% + var(--bleed));
+    display:flex;
+    flex-direction:column;
+  }
+  .rule{
+    position:relative;
+    height:var(--line);
+    background:var(--structure);
+    clip-path:inset(-14px 0 -14px 0);
+  }
+  /* the channel between the two rules */
+  .readout{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    height:28px;
+    padding:0 var(--pad-r) 0 var(--pad-l);
+    font:400 10px/1 var(--mono);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--readout);
+    white-space:nowrap;
+  }
+  .readout .rt{ min-width:0; overflow:hidden; text-overflow:ellipsis; }
+  .readout .rt::before{
+    content:'';
+    display:inline-block;
+    width:5px; height:5px;
+    margin:0 12px 1px 0;
+    background:var(--gold);
+    vertical-align:middle;
+  }
+  .readout .clock{ flex:none; opacity:.75; }
+
+  .spine{
+    grid-column:1;
+    grid-row:1 / -1;
+    justify-self:end;
+    position:relative;
+    width:var(--line);
+    background:var(--structure);
+    clip-path:inset(0 -14px 0 -14px);
+  }
+
+  /* the light pulse that travels along the T */
+  .bead{
+    position:absolute;
+    left:0; top:0;
+    opacity:0;
+    pointer-events:none;
+    filter:drop-shadow(0 0 4px var(--bead)) drop-shadow(0 0 1px var(--bead));
+  }
+  .spine .bead{
+    width:100%;
+    height:84px;
+    background:linear-gradient(to bottom, transparent, var(--bead) 38%, var(--paper) 50%, var(--bead) 62%, transparent);
+  }
+  .rule .bead{
+    width:180px;
+    height:100%;
+    background:linear-gradient(to right, transparent, var(--bead) 38%, var(--paper) 50%, var(--bead) 62%, transparent);
+  }
+
+  /* ==========================================================
+     NAV
+     ========================================================== */
+  nav{
+    grid-column:1;
+    grid-row:1 / -1;
+    position:relative;
+    z-index:2;
+    padding:58px var(--nav-pad-r) 48px var(--pad-l);
+  }
+  .nav-inner{ position:sticky; top:40px; }
+  nav ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px; }
+  nav a{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 -12px;
+    padding:9px 12px;
+    border-radius:3px;
+    color:var(--soft);
+    text-decoration:none;
+    font:400 11.5px/1.2 var(--mono);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    transition:color .2s ease, background-color .2s ease;
+  }
+  nav .idx{ flex:none; width:2.3em; font-size:10px; color:var(--faint); transition:color .2s ease; }
+  nav .lbl{ flex:none; }
+
+  /* rail = the line that connects the active item to the spine; ::after = the node on the spine */
+  nav .rail{
+    flex:1 1 auto;
+    align-self:stretch;
+    position:relative;
+    min-width:14px;
+    margin-right:calc(-1 * (var(--nav-pad-r) - var(--line) / 2));
+  }
+  nav .rail::before{
+    content:'';
+    position:absolute;
+    left:4px; right:0; top:50%;
+    height:1.5px;
+    margin-top:-.75px;
+    background:var(--structure);
+    transform:scaleX(0);
+    transform-origin:left center;
+    transition:transform .38s var(--ease), opacity .2s ease;
+  }
+  nav .rail::after{
+    content:'';
+    position:absolute;
+    right:-6px; top:50%;
+    width:12px; height:12px;
+    margin-top:-6px;
+    border-radius:50%;
+    background:var(--node);
+    border:2px solid var(--structure);
+    box-shadow:0 0 0 3px var(--bg);
+    transform:scale(0);
+    transition:transform .28s var(--ease);
+  }
+  nav a:hover, nav a:focus-visible{ color:var(--hover); background:var(--hover-bg); }
+  nav a:hover .idx, nav a:focus-visible .idx{ color:var(--hover); }
+  nav a:hover .rail::before{ transform:scaleX(1); opacity:.28; }
+  nav a.active{ color:var(--accent); }
+  nav a.active .idx{ color:var(--accent); }
+  nav a.active .rail::before{ transform:scaleX(1); opacity:1; }
+  nav a.active .rail::after{ transform:scale(1); transition-delay:.2s; }
+  :root[data-theme="dark"] nav a.active{ color:var(--cream); }
+  :root[data-theme="dark"] nav a.active .idx{ color:var(--gold); }
+  :root[data-theme="dark"] nav a.active .rail::after{ box-shadow:0 0 0 3px var(--bg), 0 0 14px 2px rgba(197,162,83,.55); }
+
+  /* Day / Night switch */
+  .mode{
+    display:inline-flex;
+    gap:2px;
+    margin-top:46px;
+    padding:3px;
+    border:1px solid var(--hairline);
+    border-radius:999px;
+  }
+  .mode button{
+    appearance:none;
+    border:0;
+    margin:0;
+    cursor:pointer;
+    padding:6px 11px;
+    border-radius:999px;
+    background:transparent;
+    color:var(--soft);
+    font:500 9.5px/1 var(--mono);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    transition:background-color .2s ease, color .2s ease;
+  }
+  .mode button:hover{ color:var(--ink); }
+  .mode button[aria-pressed="true"]{ background:var(--structure); color:var(--bg); }
+
+  /* ==========================================================
+     MAIN PANEL
+     ========================================================== */
+  main{
+    grid-column:2;
+    grid-row:3;
+    position:relative;
+    isolation:isolate;
+    width:calc(100% + var(--bleed));
+    padding:52px var(--pad-r) 104px var(--pad-l);
+    background:
+      radial-gradient(115% 80% at 0% 0%, var(--field-a), transparent 62%),
+      radial-gradient(90% 70% at 100% 100%, var(--field-b), transparent 72%),
+      linear-gradient(var(--panel), var(--panel));
+  }
+  /* faint dot grid, strongest in the top-right corner */
+  main::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background-image:radial-gradient(circle, var(--dots) 1px, transparent 1.5px);
+    background-size:22px 22px;
+    background-position:11px 11px;
+    -webkit-mask-image:radial-gradient(110% 85% at 100% 0%, #000, transparent 60%);
+            mask-image:radial-gradient(110% 85% at 100% 0%, #000, transparent 60%);
+  }
+
+  .section[hidden]{ display:none; }
+  .section::after{ content:''; display:block; clear:both; }
+
+  .section p{
+    margin:0 0 26px;
+    max-width:56ch;
+    font-size:19px;
+    line-height:1.8;
+    color:var(--text);
+  }
+  .section p.lede{ font-size:22.5px; line-height:1.62; color:var(--ink); }
+  .section strong{ font-weight:700; color:var(--ink); }
+
+  /* each section's small descriptor line; with JS on, it is shown in the channel between the rules instead */
+  .section p.role{
+    margin:0 0 22px;
+    font:400 11px/1.6 var(--mono);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--readout);
+  }
+  .js .section p.role{
+    position:absolute;
+    width:1px; height:1px;
+    margin:-1px; padding:0; border:0;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    white-space:nowrap;
+  }
+
+  /* photo with viewfinder corners */
+  .photo{ float:right; width:180px; margin:6px 0 30px 44px; }
+  .frame{
+    --c:var(--structure);
+    position:relative;
+    width:100%;
+    aspect-ratio:9 / 11;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    box-shadow:inset 0 0 0 1px var(--hairline);
+    background:
+      linear-gradient(var(--c),var(--c)) left top / 16px 2px no-repeat,
+      linear-gradient(var(--c),var(--c)) left top / 2px 16px no-repeat,
+      linear-gradient(var(--c),var(--c)) right top / 16px 2px no-repeat,
+      linear-gradient(var(--c),var(--c)) right top / 2px 16px no-repeat,
+      linear-gradient(var(--c),var(--c)) left bottom / 16px 2px no-repeat,
+      linear-gradient(var(--c),var(--c)) left bottom / 2px 16px no-repeat,
+      linear-gradient(var(--c),var(--c)) right bottom / 16px 2px no-repeat,
+      linear-gradient(var(--c),var(--c)) right bottom / 2px 16px no-repeat;
+    color:var(--faint);
+    font:400 9.5px/1.5 var(--mono);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+  .frame img{ position:absolute; inset:7px; width:calc(100% - 14px); height:calc(100% - 14px); object-fit:cover; }
+  .frame .ph::before{ content:'+'; display:block; margin-bottom:8px; font-size:18px; letter-spacing:0; text-align:center; color:var(--structure); opacity:.6; }
+  .photo figcaption{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+    font:400 9.5px/1 var(--mono);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--faint);
+  }
+
+  .contact{ display:flex; flex-wrap:wrap; gap:12px 30px; margin:4px 0 0; }
+  .contact a{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:0 0 7px;
+    border-bottom:1px solid var(--hairline);
+    color:var(--ink);
+    text-decoration:none;
+    font:400 12.5px/1 var(--mono);
+    letter-spacing:.02em;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .contact a::after{ content:'→'; transition:transform .25s var(--ease); }
+  .contact a:hover{ color:var(--link-hover); border-color:currentColor; }
+  .contact a:hover::after{ transform:translateX(4px); }
+
+  /* "Recent" as a small timeline */
+  .news{ clear:both; max-width:56ch; padding-top:56px; }
+  .news h3{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:0 0 22px;
+    font:500 10.5px/1 var(--mono);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--soft);
+  }
+  .news h3::after{ content:''; flex:1; height:1px; background:var(--hairline); }
+  .news ul{ position:relative; list-style:none; margin:0; padding:0 0 0 28px; display:flex; flex-direction:column; gap:16px; }
+  .news ul::before{ content:''; position:absolute; left:5px; top:10px; bottom:10px; width:1px; background:var(--hairline); }
+  .news li{ position:relative; font-size:15.5px; line-height:1.6; color:var(--text); }
+  .news li::before{
+    content:'';
+    position:absolute;
+    left:-28px; top:.45em;
+    width:11px; height:11px;
+    border-radius:50%;
+    border:1.5px solid var(--structure);
+    background:var(--bg);
+  }
+
+  /* links inside the text */
+  .section p a{
+    color:inherit;
+    text-decoration:underline;
+    text-decoration-color:var(--accent);
+    text-decoration-thickness:1px;
+    text-underline-offset:3px;
+    transition:color .2s ease;
+  }
+  .section p a:hover{ color:var(--link-hover); }
+  :root[data-theme="dark"] .section p a:hover{ color:var(--gold); }
+
+  /* Research: publication list */
+  .sub-h{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    max-width:64ch;
+    margin:44px 0 6px;
+    font:500 10.5px/1 var(--mono);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--soft);
+  }
+  .sub-h::after{ content:''; flex:1; height:1px; background:var(--hairline); }
+  .top-links + .sub-h{ margin-top:34px; }
+  .pubs{ list-style:none; margin:0; padding:0; max-width:64ch; }
+  .pubs li{ padding:18px 0 20px; border-bottom:1px solid var(--hairline); }
+  .pubs li:last-child{ border-bottom:0; }
+  .pubs .t{ font-size:19px; line-height:1.45; color:var(--ink); }
+  .pubs .with{ font-size:15px; color:var(--soft); }
+  .pubs .v{ margin-top:4px; font-size:15.5px; line-height:1.55; color:var(--text); }
+  .pubs .note{ margin-top:8px; font-size:14px; line-height:1.5; font-style:italic; color:var(--soft); }
+  .pl{ display:flex; flex-wrap:wrap; gap:8px 20px; margin-top:10px; }
+  .pl a{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding-bottom:4px;
+    border-bottom:1px solid var(--hairline);
+    color:var(--accent);
+    text-decoration:none;
+    font:500 10.5px/1 var(--mono);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .pl a::after{ content:'↗'; transition:transform .25s var(--ease); }
+  .pl a:hover{ color:var(--link-hover); border-color:currentColor; }
+  .pl a:hover::after{ transform:translate(2px,-2px); }
+  :root[data-theme="dark"] .pl a{ color:var(--gold); }
+  :root[data-theme="dark"] .pl a:hover{ color:var(--cream); }
+  .top-links{ margin-top:0; }
+
+  /* Teaching: courses by semester */
+  .terms{ max-width:64ch; margin:0 0 34px; border-top:1px solid var(--hairline); }
+  .term{
+    display:grid;
+    grid-template-columns:13.5em 1fr;
+    gap:4px 20px;
+    padding:14px 0;
+    border-bottom:1px solid var(--hairline);
+  }
+  .term h4{
+    margin:0;
+    padding-top:5px;
+    font:400 10.5px/1.6 var(--mono);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--readout);
+  }
+  .term h4 span{ color:var(--soft); }
+  .term ul{ list-style:none; margin:0; padding:0; }
+  .term li{ font-size:18px; line-height:1.6; font-style:italic; color:var(--ink); }
+  @media (max-width:480px){
+    .term{ grid-template-columns:1fr; }
+    .pubs .t{ font-size:17.5px; }
+  }
+
+  /* ==========================================================
+     MOTION
+     ========================================================== */
+  @keyframes materialize{ from{ opacity:0; transform:translateY(10px); filter:blur(6px); } to{ opacity:1; transform:none; filter:none; } }
+  @keyframes grow-y{ from{ transform:scaleY(0); } }
+  @keyframes grow-x{ from{ transform:scaleX(0); } }
+  @keyframes fade-in{ from{ opacity:0; } }
+
+  .section.enter > *{ animation:materialize .7s var(--ease) both; }
+  .section.enter > *:nth-child(2){ animation-delay:.05s; }
+  .section.enter > *:nth-child(3){ animation-delay:.10s; }
+  .section.enter > *:nth-child(4){ animation-delay:.15s; }
+  .section.enter > *:nth-child(5){ animation-delay:.20s; }
+  .section.enter > *:nth-child(n+6){ animation-delay:.25s; }
+
+  /* first load: the T draws itself, then everything settles in */
+  .boot .spine{ animation:grow-y 1s var(--ease) both; transform-origin:top; }
+  .boot .rule{ animation:grow-x .9s var(--ease) .35s both; transform-origin:left; }
+  .boot .rule:last-child{ animation-delay:.45s; }
+  .boot .readout{ animation:fade-in .6s ease .75s both; }
+  .boot header h1{ animation:materialize .9s var(--ease) .1s both; }
+  .boot nav li, .boot .mode{ animation:materialize .6s var(--ease) both; }
+  .boot nav li:nth-child(1){ animation-delay:.20s; }
+  .boot nav li:nth-child(2){ animation-delay:.25s; }
+  .boot nav li:nth-child(3){ animation-delay:.30s; }
+  .boot nav li:nth-child(4){ animation-delay:.35s; }
+  .boot nav li:nth-child(5){ animation-delay:.40s; }
+  .boot nav li:nth-child(6){ animation-delay:.45s; }
+  .boot .mode{ animation-delay:.55s; }
+  .boot main{ animation:fade-in .9s ease .3s both; }
+  .boot .section > *{ animation:materialize .8s var(--ease) .45s both; }
+
+  /* Day/Night switch: circular reveal (browsers with View Transitions) */
+  ::view-transition-old(root), ::view-transition-new(root){ animation:none; mix-blend-mode:normal; }
+  .theming *, .theming *::before, .theming *::after{ transition:none !important; }
+
+  /* ==========================================================
+     SMALLER SCREENS
+     ========================================================== */
+  @media (max-width:1100px){
+    .readout .clock{ display:none; }
+  }
+  /* narrower: the descriptor moves back into the page; the channel just shows the clock */
+  @media (max-width:900px){
+    .readout{ justify-content:flex-end; }
+    .readout .rt{ display:none; }
+    .readout .clock{ display:inline; }
+    .js .section p.role{ position:static; width:auto; height:auto; margin:0 0 22px; overflow:visible; clip:auto; white-space:normal; }
+    .photo{ width:146px; margin-left:32px; }
+  }
+  @media (max-width:760px){
+    .photo{ float:none; width:150px; margin:0 0 28px; }
+  }
+  @media (max-width:680px){
+    .section p{ font-size:18px; }
+    .section p.lede{ font-size:21px; }
+  }
+  @media (max-width:480px){
+    .shell{ grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto auto 1fr; }
+    nav{ grid-column:1; grid-row:1; padding:20px 20px 16px; border-bottom:var(--line) solid var(--structure); }
+    header{ grid-column:1; grid-row:2; padding:30px 20px 22px; }
+    .rules{ grid-column:1; grid-row:3; width:100%; }
+    main{ grid-column:1; grid-row:4; width:100%; padding:32px 20px 72px; }
+    .spine{ display:none; }
+    .nav-inner{ position:static; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 16px; }
+    nav ul{ flex-direction:row; flex-wrap:wrap; gap:2px; }
+    nav a{ margin:0; padding:7px 8px; gap:5px; font-size:10.5px; }
+    nav .idx{ width:auto; font-size:9px; }
+    nav .rail{ display:none; }
+    .mode{ margin-top:0; }
+    h1{ font-size:30px; }
+    .readout{ padding:0 20px; }
+    .photo{ float:none; width:100%; max-width:220px; margin:0 0 28px; }
+    .section p{ font-size:17.5px; line-height:1.75; }
+    .section p.lede{ font-size:20px; }
+  }
+
+  /* photo variants */
+  .frame img{ background:var(--bg); }
+  .photo.wide{ width:260px; }
+  .photo.land{ width:300px; }
+  .photo.wide .frame{ aspect-ratio:4 / 3; }
+  .photo.land .frame{ aspect-ratio:3 / 2; }
+  .photo.sq .frame{ aspect-ratio:1 / 1; }
+  .photos{ float:right; width:220px; margin:6px 0 30px 44px; }
+  .photos .photo{ float:none; width:100%; margin:0 0 22px; }
+  .photos .photo:last-child{ margin-bottom:0; }
+  /* lists step around the floated photos instead of running underneath */
+  .pubs li{ display:flow-root; }
+  .terms{ border-top:0; }
+  .term:first-child{ border-top:1px solid var(--hairline); }
+  .photo.big{ float:none; width:100%; max-width:560px; margin:56px 0 0; }
+  @media (max-width:900px){
+    .photo.wide{ width:210px; }
+    .photo.land:not(.big){ width:240px; }
+    .photos{ width:180px; margin-left:32px; }
+  }
+  @media (max-width:760px){
+    .photo.wide, .photo.land{ float:none; width:100%; max-width:340px; margin:0 0 28px; }
+    .photos{ float:none; width:100%; max-width:460px; margin:0 0 28px; display:flex; gap:16px; align-items:flex-start; }
+    .photos .photo{ flex:1; margin:0; }
+  }
+
+  /* Impressum */
+  .fine{ clear:both; padding-top:64px; }
+  .fine a{
+    font:400 10px/1 var(--mono);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--faint);
+    text-decoration:none;
+    border-bottom:1px solid var(--hairline);
+    padding-bottom:4px;
+    transition:color .2s ease;
+  }
+  .fine a:hover{ color:var(--link-hover); }
+  :root[data-theme="dark"] .fine a:hover{ color:var(--gold); }
+  .imprint{ margin:0 0 26px; font-style:normal; font-size:19px; line-height:1.7; color:var(--ink); }
+  .section p.small.first{ margin-top:40px; }
+  .section p.small{ margin-top:22px; font-size:15.5px; line-height:1.7; color:var(--soft); }
+
+  @media (prefers-reduced-motion:reduce){
+    *, *::before, *::after{
+      animation-duration:.001ms !important;
+      animation-delay:0s !important;
+      animation-iteration-count:1 !important;
+      transition-duration:.001ms !important;
+      transition-delay:0s !important;
+      scroll-behavior:auto !important;
+    }
+  }
+</style>
+</head>
+<body data-section="about">
+  <!--
+    EDITING NOTES
+    - Each page is a <section data-section="..."> inside <main>, below.
+    - The small line at the top of each section (class="role") is the text
+      that appears in the strip between the two horizontal lines.
+    - To add your photo, see the comment inside <figure class="photo">.
+  -->
+  <div class="shell">
+    <header>
+      <h1><span class="name">Derek Baker</span> <span class="dash">—</span> <span class="page"><span id="page-name" data-sec="about">About</span><span class="caret" aria-hidden="true"></span></span></h1>
+    </header>
+
+    <div class="rules">
+      <div class="rule"><i class="bead"></i></div>
+      <div class="readout" aria-hidden="true">
+        <span class="rt" id="readout-text">Associate Professor of Philosophy · Frankfurt School of Finance &amp; Management</span>
+        <span class="clock">Frankfurt <span id="clock"></span></span>
+      </div>
+      <div class="rule"><i class="bead"></i></div>
+    </div>
+
+    <div class="spine" aria-hidden="true"><i class="bead"></i></div>
+
+    <nav aria-label="Site">
+      <div class="nav-inner">
+        <ul>
+          <li><a href="#about" data-section="about" data-label="About" class="active" aria-current="page"><span class="idx" aria-hidden="true">01</span><span class="lbl">About</span><span class="rail"></span></a></li>
+          <li><a href="#research" data-section="research" data-label="Research"><span class="idx" aria-hidden="true">02</span><span class="lbl">Research</span><span class="rail"></span></a></li>
+          <li><a href="#teaching" data-section="teaching" data-label="Teaching"><span class="idx" aria-hidden="true">03</span><span class="lbl">Teaching</span><span class="rail"></span></a></li>
+          <li><a href="#other" data-section="other" data-label="Other"><span class="idx" aria-hidden="true">04</span><span class="lbl">Other</span><span class="rail"></span></a></li>
+          <li><a href="#contact" data-section="contact" data-label="Contact"><span class="idx" aria-hidden="true">05</span><span class="lbl">Contact</span><span class="rail"></span></a></li>
+          <li><a href="Derek_Baker_CV.pdf" target="_blank" rel="noopener" data-label="CV"><span class="idx" aria-hidden="true">↗</span><span class="lbl">CV</span><span class="rail"></span></a></li>
+        </ul>
+        <div class="mode" role="group" aria-label="Colour mode">
+          <button type="button" data-mode="light" aria-pressed="true">Day</button>
+          <button type="button" data-mode="dark" aria-pressed="false">Night</button>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <!-- ===================== ABOUT ===================== -->
+      <section class="section" data-section="about">
+        <p class="role">Associate Professor of Philosophy · Frankfurt School of Finance &amp; Management</p>
+
+        <figure class="photo">
+          <div class="frame"><img src="images/about-portrait.jpg" alt="Derek Baker"></div>
+          <figcaption><span>Fig. 1</span><span>D. Baker</span></figcaption>
+        </figure>
+
+        <p class="lede">My research has primarily been a series of attempts to make sense of the possibility and presuppositions of normative thought. I am still working on it. It has led to explorations of expressivism and quasirealism. More recently, I have been interested in radical pluralism and doing without authoritative notions of normativity. Earlier work deals with the nature of desire and self-knowledge.</p>
+
+        <p>I also have research interests in social and political epistemology, and I am working on papers exploring what classic ideas of virtue and personal well-being should look like once we realize that human beings are agents with bounded rationality.</p>
+
+        <p>I find all of philosophy interesting, and so I like teaching just about any topic that isn't too technical for a generalist to handle at the undergraduate level.</p>
+
+        <p>I am currently an Associate Professor in the Computational Science and Philosophy Department at <a href="https://www.frankfurt-school.de/en/research-and-faculty/faculty/faculty-directory/derek-baker" target="_blank" rel="noopener">Frankfurt School of Finance and Management</a>; prior to that I lived in Hong Kong, where I taught for 13 years at Lingnan University.</p>
+
+        <p>This website was made by Claude with some instructions from me. My basic belief is that any part of our lives that involves processing information should now be ambitious and elaborate to a degree that would have been silly before. The website is intended as a tiny example of that.</p>
+
+        <div class="fine"><a href="#impressum">Impressum</a></div>
+      </section>
+
+      <!-- ===================== RESEARCH ===================== -->
+      <section class="section" data-section="research" hidden>
+        <p class="role">Metaethics · Moral Psychology · Social Epistemology</p>
+
+        <figure class="photo wide">
+          <div class="frame"><img src="images/research-cat.jpg" alt="Derek Baker working on a laptop with a cat asleep on his chest" loading="lazy"></div>
+          <figcaption><span>Fig. 2</span><span>Research Assistant</span></figcaption>
+        </figure>
+
+        <div class="pl top-links">
+          <a href="https://philpeople.org/profiles/derek-clayton-baker" target="_blank" rel="noopener">PhilPeople Profile</a>
+          <a href="Derek_Baker_CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+        </div>
+
+        <h3 class="sub-h">Journal Articles &amp; Book Chapters</h3>
+        <ol class="pubs">
+          <li>
+            <div class="t">Mandatory Retirement and Arbitrary Power</div>
+            <div class="v">In <em>Is Mandatory Retirement Morally Defensible? Ethics, Economics, and Law in Ageing Societies</em>, H.L. Li (ed.), Routledge (forthcoming)</div>
+            <div class="pl">
+              <a href="https://philarchive.org/rec/BAKMRA-6" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://www.routledge.com/Is-Mandatory-Retirement-Morally-Defensible-Ethics-Economics-and-Law-in-Ageing-Societies/Li/p/book/9781041139584" target="_blank" rel="noopener">Publisher</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Handling Rejection <span class="with">(with Jack Woods)</span></div>
+            <div class="v"><em>Philosophical Studies</em> 180 (2023): 159–90</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKHR-5" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://link.springer.com/article/10.1007/s11098-022-01884-5" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Deflating the Many Attitudes Problem</div>
+            <div class="v"><em>Philosophical Quarterly</em> 72 (2022): 1–18</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKDTM" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://academic.oup.com/pq/article-abstract/72/1/1/6178876" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">If You’re Quasi-Explaining, You’re Quasi-Losing</div>
+            <div class="v"><em>Oxford Studies in Metaethics</em> 16, R. Shafer-Landau (ed.), Oxford University Press (2022): 54–80</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKIYQ" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://global.oup.com/academic/product/oxford-studies-in-metaethics-volume-16-9780192897466" target="_blank" rel="noopener">Publisher</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Quasirealism as Semantic Dispensability</div>
+            <div class="v"><em>Philosophical Studies</em> 178 (2021): 2313–33</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKQAS" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://link.springer.com/article/10.1007/s11098-020-01556-2" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Skepticism about Ought <em>Simpliciter</em></div>
+            <div class="v"><em>Oxford Studies in Metaethics</em> 13, R. Shafer-Landau (ed.), Oxford University Press (2018): 230–52</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKSAO-2" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://academic.oup.com/book/10592/chapter-abstract/158572691" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Expression and Guidance in Schroeder’s Expressivist Semantics</div>
+            <div class="v"><em>Erkenntnis</em> 83 (2018): 829–52</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKEAG-2" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://link.springer.com/article/10.1007/s10670-017-9916-0" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">The Varieties of Normativity</div>
+            <div class="v">In <em>The Routledge Handbook of Metaethics</em>, T. McPherson and D. Plunkett (eds.), Routledge (2017): 567–81</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKTVO-3" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://www.routledge.com/The-Routledge-Handbook-of-Metaethics/McPherson-Plunkett/p/book/9780367856076" target="_blank" rel="noopener">Publisher</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">The Verdictive Organization of Desire</div>
+            <div class="v"><em>Canadian Journal of Philosophy</em> 47 (2017): 589–612</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/DERTVO-3" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://www.cambridge.org/core/journals/canadian-journal-of-philosophy/article/abs/verdictive-organization-of-desire/BCCB97E3BCB9F55847D5CD441F2DB784" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Deliberators Must Be Imperfect</div>
+            <div class="v"><em>Philosophy and Phenomenological Research</em> 93 (2016): 321–47</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKDMB-2" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/phpr.12199" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Intuitions about Disagreement Do Not Support the Normativity of Meaning</div>
+            <div class="v"><em>dialectica</em> 70 (2016): 65–84</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKIAD" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://doi.org/10.1111/1746-8361.12133" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">On Rationally Valuing One’s Life</div>
+            <div class="v">Special issue of <em>Asian Bioethics Review</em>, B. Steinbock (ed.), 8 (2016): 1–16</div>
+            <div class="pl">
+              <a href="https://muse.jhu.edu/article/631593/summary" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Why Transparency Undermines Economy</div>
+            <div class="v"><em>Synthese</em> 192 (2015): 3037–50</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKWTU" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://link.springer.com/article/10.1007/s11229-015-0700-x" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Akrasia and the Problem of the Unity of Reason</div>
+            <div class="v"><em>Ratio</em> 28 (2015): 65–80</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKAAT-2" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://onlinelibrary.wiley.com/doi/10.1111/rati.12066" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">How Expressivists Can and Should Explain Inconsistency <span class="with">(with Jack Woods)</span></div>
+            <div class="v"><em>Ethics</em> 125 (2015): 391–424</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKHEC" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://www.journals.uchicago.edu/doi/full/10.1086/678371" target="_blank" rel="noopener">Published Version</a>
+              <a href="https://peasoupblog.com/2015/01/ethics-discussions-at-pea-soup-baker-and-woods-how-expressivists-can-and-should-explain-inconsistency-with-precis-by-schroeder/" target="_blank" rel="noopener">PEA Soup Discussion</a>
+            </div>
+            <div class="note">Topic of an online symposium at PEA Soup, with a critical précis by Mark Schroeder.</div>
+          </li>
+          <li>
+            <div class="t">The Abductive Case for Humeanism over Quasi-Perceptual Theories of Desire</div>
+            <div class="v"><em>Journal of Ethics and Social Philosophy</em> 8 (2014): 1–29</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKTAC" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://www.jesp.org/paper/36346f73-90e0-811f-80cb-d298b77fe561" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Knowing Yourself—and Giving Up on Your Own Agency in the Process</div>
+            <div class="v"><em>Australasian Journal of Philosophy</em> 90 (2012): 641–56</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKKYG" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://www.tandfonline.com/doi/abs/10.1080/00048402.2011.617761" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+          <li>
+            <div class="t">Ambivalent Desires and the Problem with Reduction</div>
+            <div class="v"><em>Philosophical Studies</em> 150 (2010): 37–47</div>
+            <div class="pl">
+              <a href="https://philarchive.org/archive/BAKADA" target="_blank" rel="noopener">Penultimate Draft</a>
+              <a href="https://link.springer.com/article/10.1007/s11098-009-9396-4" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+        </ol>
+
+        <h3 class="sub-h">Discussion Notes</h3>
+        <ol class="pubs">
+          <li>
+            <div class="t">Comments on Victor Tadros’s “Treatment and Accountability”</div>
+            <div class="v">In <em>Lanson Lectures in Bioethics (2016–2022): Assisted Suicide, Responsibility, and Pandemic Ethics</em>, H.L. Li (ed.), Palgrave Macmillan (2024): 159–68</div>
+            <div class="pl">
+              <a href="https://doi.org/10.1007/978-3-031-42052-8" target="_blank" rel="noopener">Publisher</a>
+            </div>
+          </li>
+        </ol>
+
+        <h3 class="sub-h">Book Reviews</h3>
+        <ol class="pubs">
+          <li>
+            <div class="t"><em>Social Goodness: The Ontology of Social Norms</em>, by Charlotte Witt</div>
+            <div class="v"><em>Journal of Moral Philosophy</em> 23 (2026): 535–38</div>
+          </li>
+          <li>
+            <div class="t"><em>Free Will and Action Explanation</em>, by Scott Sehon</div>
+            <div class="v"><em>Australasian Journal of Philosophy</em> 96 (2018): 411–13</div>
+          </li>
+          <li>
+            <div class="t"><em>Motivational Internalism</em>, eds. G. Björnsson, C. Strandberg, R. Francén Olinder, J. Eriksson, and F. Björklund</div>
+            <div class="v"><em>Australasian Journal of Philosophy</em> 94 (2016): 814–16</div>
+            <div class="pl">
+              <a href="https://www.tandfonline.com/doi/abs/10.1080/00048402.2015.1137331" target="_blank" rel="noopener">Published Version</a>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ===================== TEACHING ===================== -->
+      <section class="section" data-section="teaching" hidden>
+        <p class="role">Management, Philosophy &amp; Economics · Applied Data Science</p>
+
+        <figure class="photo ">
+          <div class="frame"><img src="images/teaching-athena.jpg" alt="Athena, detail from an ancient Greek red-figure vase" loading="lazy"></div>
+          <figcaption><span>Fig. 3</span><span>Athena (detail)</span></figcaption>
+        </figure>
+
+        <p class="lede">My teaching is primarily within Frankfurt School’s <em>Management, Philosophy and Economics</em> programme. Below are some recent and upcoming courses:</p>
+
+        <div class="terms">
+          <div class="term">
+            <h4>Summer Semester 2026</h4>
+            <ul><li>Politics, Justice and the State</li><li>Independent Research Project</li></ul>
+          </div>
+          <div class="term">
+            <h4>Winter Semester 2026/27</h4>
+            <ul><li>Current Topics in Practical Philosophy</li></ul>
+          </div>
+          <div class="term">
+            <h4>Summer Semester 2027 <span>(planned)</span></h4>
+            <ul><li>Current Topics in Theoretical Philosophy</li><li>Politics, Justice and the State</li></ul>
+          </div>
+        </div>
+
+        <p>I also teach in the <em>Master in Applied Data Science</em> programme:</p>
+
+        <div class="terms">
+          <div class="term">
+            <h4>Summer Semester 2026</h4>
+            <ul><li>AI and Humanity: Ethics of Data Science</li></ul>
+          </div>
+          <div class="term">
+            <h4>Summer Semester 2027 <span>(planned)</span></h4>
+            <ul><li>AI and Humanity: Ethics of Data Science</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== OTHER ===================== -->
+      <section class="section" data-section="other" hidden>
+        <p class="role">DBake Squared · A Substack with Dave Baker</p>
+
+        <div class="photos">
+          <figure class="photo sq">
+          <div class="frame"><img src="images/other-drawing.jpg" alt="Pencil drawing of Cthulhu" loading="lazy"></div>
+          <figcaption><span>Fig. 4</span><span>Guest Artist</span></figcaption>
+        </figure>
+          <figure class="photo wide">
+          <div class="frame"><img src="images/other-cat.jpg" alt="Calico cat asleep on top of a scratching post" loading="lazy"></div>
+          <figcaption><span>Fig. 5</span><span>Off Duty</span></figcaption>
+        </figure>
+        </div>
+
+        <p class="lede">Outside of philosophy, I have a Substack with <a href="https://websites.umich.edu/~djbaker/philosophy.html" target="_blank" rel="noopener">Dave Baker</a>, <a href="https://dbakesquared.substack.com" target="_blank" rel="noopener"><em>DBake Squared</em></a>. It was originally planned as a discussion of science fiction. Then real life became science fiction, so we (primarily <strong>I</strong>) began contributing to <em>the Discourse</em>. There is probably some lower level of Hell waiting for me as punishment.</p>
+
+        <p>For those who like good things, here’s <a href="https://dbakesquared.substack.com/p/themes-in-dune-part-i" target="_blank" rel="noopener">the first part of my four-part essay on <em>Dune</em></a> (I don’t care if you think it is too long; filling Substack with two-thousand-word essays because those get more engagement is the slopification of our culture, not AI).</p>
+
+        <p>For another good thing, here’s <a href="https://dbakesquared.substack.com/p/the-real-reason-todays-ais-cant-be" target="_blank" rel="noopener">Dave’s discussion of AI consciousness</a>.</p>
+
+        <p>For weirdos who think that the world has been made better by thwarted intellectuals and autodidacts with an unusual talent for self-branding ranting about how the world is supposed to work, my personal Time Cube can be found <a href="https://dbakesquared.substack.com/p/use-ai-or-dont" target="_blank" rel="noopener">here</a>.</p>
+
+        <p>I plan to write something good again soon. I promise.</p>
+      </section>
+
+      <!-- ===================== CONTACT ===================== -->
+      <section class="section" data-section="contact" hidden>
+        <p class="role">Get in Touch</p>
+        <p class="lede">The best way to reach me is by email.</p>
+        <div class="contact">
+          <a href="mailto:derek.clayton.baker@gmail.com">derek.clayton.baker@gmail.com</a>
+          <a href="mailto:D.Baker@fs.de">D.Baker@fs.de</a>
+        </div>
+
+        <figure class="photo land big">
+          <div class="frame"><img src="images/contact-shi-ke.jpg" alt="Ink painting attributed to Shi Ke, Two Patriarchs Harmonizing Their Minds, detail" loading="lazy"></div>
+          <figcaption><span>Fig. 6</span><span>Shi Ke (detail)</span></figcaption>
+        </figure>
+      </section>
+      <!-- ===================== IMPRESSUM (linked from the bottom of About) ===================== -->
+      <section class="section" data-section="impressum" hidden>
+        <p class="role">Impressum · Legal Notice</p>
+        <address class="imprint">
+          Prof. Derek Baker<br>
+          Computational Science and Philosophy Department<br>
+          Frankfurt School of Finance and Management<br>
+          Adickesallee 32–34<br>
+          60322 Frankfurt am Main
+        </address>
+        <div class="contact">
+          <a href="mailto:d.baker@fs.de">d.baker@fs.de</a>
+          <a href="mailto:derek.clayton.baker@gmail.com">derek.clayton.baker@gmail.com</a>
+        </div>
+        <p class="small first">This site has no cookies and currently collects no analytics. Any views expressed here are my own and do not reflect those of my employer.</p>
+        <p class="small">This site is hosted on GitHub Pages, a service of GitHub, Inc. When you visit it, GitHub logs and stores your IP address for security purposes. For details, see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub’s privacy statement</a>.</p>
+        <div class="fine"><a href="#about">← Back to About</a></div>
+      </section>
+    </main>
+  </div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var body = document.body;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var labels = { about:'About', research:'Research', teaching:'Teaching', other:'Other', contact:'Contact', impressum:'Impressum' };
+
+    var page = document.querySelector('h1 .page');
+    var pageName = document.getElementById('page-name');
+    var readout = document.getElementById('readout-text');
+    var sections = document.querySelectorAll('.section');
+    var navLinks = document.querySelectorAll('nav a[data-label]');
+    var sectionLinks = document.querySelectorAll('nav a[data-section]');
+    var spine = document.querySelector('.spine');
+    var spineBead = spine.querySelector('.bead');
+    var rules = document.querySelectorAll('.rule');
+    var active = null;
+
+    function motionOK(){ return !reduce.matches; }
+
+    function roleOf(section){
+      var el = document.querySelector('.section[data-section="' + section + '"] .role');
+      return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+    }
+
+    /* ---- Header: the caret sweeps across and writes the new word ---- */
+    function setHeader(label, sec, previewing, animate){
+      var changed = pageName.textContent !== label;
+      pageName.textContent = label;
+      pageName.setAttribute('data-sec', sec);
+      pageName.classList.toggle('previewing', !!previewing);
+      if (!animate || !changed || !motionOK()) return;
+      page.style.setProperty('--w', pageName.getBoundingClientRect().width + 'px');
+      page.classList.remove('scanning');
+      void page.offsetWidth;
+      page.classList.add('scanning');
+    }
+    page.addEventListener('animationend', function(e){
+      if (e.animationName === 'caret-sweep') page.classList.remove('scanning');
+    });
+
+    /* ---- Readout: the descriptor decodes into place ---- */
+    var decodeFrame;
+    function decode(el, text){
+      cancelAnimationFrame(decodeFrame);
+      if (!motionOK()){ el.textContent = text; return; }
+      var glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/<>+';
+      var start = performance.now();
+      var dur = Math.min(750, 260 + text.length * 6);
+      function frame(now){
+        var p = Math.max(0, Math.min(1, (now - start) / dur));
+        var n = Math.floor(p * text.length);
+        var out = text.slice(0, n);
+        for (var i = n; i < Math.min(text.length, n + 7); i++){
+          out += text.charAt(i) === ' ' ? ' ' : glyphs.charAt((Math.random() * glyphs.length) | 0);
+        }
+        el.textContent = out;
+        if (p < 1) decodeFrame = requestAnimationFrame(frame);
+      }
+      decodeFrame = requestAnimationFrame(frame);
+    }
+
+    /* ---- Pulse: from the active item's node, along the spine, out along both rules ---- */
+    function pulse(link){
+      if (!motionOK() || !spineBead.animate) return;
+      if (getComputedStyle(spine).display === 'none') return;
+      var s = spine.getBoundingClientRect();
+      var a = link.getBoundingClientRect();
+      var r1 = rules[0].getBoundingClientRect();
+      var r2 = rules[1].getBoundingClientRect();
+      var h = spineBead.offsetHeight;
+      var from = a.top + a.height / 2 - s.top - h / 2;
+      var to = (r1.top + r2.bottom) / 2 - s.top - h / 2;
+      var vDur = Math.max(220, Math.abs(to - from) * 1.2);
+      var lead = 180;
+      spineBead.animate([
+        { transform:'translateY(' + from + 'px)', opacity:0 },
+        { transform:'translateY(' + (from + (to - from) * .15) + 'px)', opacity:1, offset:.15 },
+        { transform:'translateY(' + to + 'px)', opacity:1 }
+      ], { duration:vDur, delay:lead, easing:'cubic-bezier(.5,0,.75,.35)' });
+      rules.forEach(function(rule, i){
+        var bead = rule.querySelector('.bead');
+        var w = rule.getBoundingClientRect().width;
+        var bw = bead.offsetWidth;
+        bead.animate([
+          { transform:'translateX(' + (-bw / 2) + 'px)', opacity:1 },
+          { transform:'translateX(' + (w - bw / 2) + 'px)', opacity:1, offset:.85 },
+          { transform:'translateX(' + (w + bw * .2) + 'px)', opacity:0 }
+        ], { duration:900, delay:lead + vDur - 40 + i * 60, easing:'cubic-bezier(.3,.5,.3,1)' });
+      });
+    }
+
+    /* ---- Switch section ---- */
+    function activate(section, animate){
+      if (!labels[section]) section = 'about';
+      if (section === active) return;
+      active = section;
+      body.setAttribute('data-section', section);
+
+      var link = null;
+      sectionLinks.forEach(function(a){
+        var on = a.getAttribute('data-section') === section;
+        a.classList.toggle('active', on);
+        if (on){ a.setAttribute('aria-current', 'page'); link = a; }
+        else { a.removeAttribute('aria-current'); }
+      });
+
+      sections.forEach(function(s){
+        var on = s.getAttribute('data-section') === section;
+        s.hidden = !on;
+        s.classList.remove('enter');
+        if (on && animate && motionOK()){ void s.offsetWidth; s.classList.add('enter'); }
+      });
+
+      setHeader(labels[section], section, false, animate);
+      if (animate) decode(readout, roleOf(section)); else readout.textContent = roleOf(section);
+      if (animate && link) pulse(link);
+      document.title = section === 'about' ? 'Derek Baker' : labels[section] + ' — Derek Baker';
+    }
+
+    /* Sections live in the URL (#research etc.), so links and the back button work */
+    function sectionFromHash(){
+      var h = window.location.hash.slice(1);
+      return labels[h] ? h : 'about';
+    }
+    window.addEventListener('hashchange', function(){
+      if (window.scrollY > 0) window.scrollTo(0, 0);
+      activate(sectionFromHash(), true);
+    });
+    activate(sectionFromHash(), false);
+
+    /* ---- Hover preview in the header ---- */
+    function clearPreview(){
+      if (pageName.classList.contains('previewing')) setHeader(labels[active], active, false, false);
+    }
+    navLinks.forEach(function(a){
+      function enter(){
+        var sec = a.getAttribute('data-section') || 'cv';
+        if (sec === active){ clearPreview(); return; }
+        setHeader(a.getAttribute('data-label'), sec, true, true);
+      }
+      a.addEventListener('mouseenter', enter);
+      a.addEventListener('focus', enter);
+      a.addEventListener('mouseleave', clearPreview);
+      a.addEventListener('blur', clearPreview);
+    });
+
+    /* ---- Frankfurt clock ---- */
+    var clock = document.getElementById('clock');
+    var fmt = null;
+    try {
+      fmt = new Intl.DateTimeFormat('en-GB', { timeZone:'Europe/Berlin', hour:'2-digit', minute:'2-digit', hourCycle:'h23' });
+    } catch (e) {}
+    function tick(){ if (fmt) clock.textContent = fmt.format(new Date()); }
+    tick();
+    setInterval(tick, 20000);
+
+    /* ---- Day / Night ---- */
+    var modeButtons = document.querySelectorAll('.mode button');
+    function setTheme(mode){
+      root.setAttribute('data-theme', mode);
+      modeButtons.forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === mode)); });
+    }
+    modeButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var mode = btn.getAttribute('data-mode');
+        if (root.getAttribute('data-theme') === mode) return;
+        if (!document.startViewTransition || !motionOK()){ setTheme(mode); return; }
+        var r = btn.getBoundingClientRect();
+        var x = r.left + r.width / 2, y = r.top + r.height / 2;
+        var radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+        root.classList.add('theming');
+        var vt = document.startViewTransition(function(){ setTheme(mode); });
+        vt.ready.then(function(){
+          root.animate(
+            { clipPath:['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + radius + 'px at ' + x + 'px ' + y + 'px)'] },
+            { duration:750, easing:'cubic-bezier(.2,.7,.2,1)', pseudoElement:'::view-transition-new(root)' }
+          );
+        }).catch(function(){});
+        vt.finished.then(function(){ root.classList.remove('theming'); }, function(){ root.classList.remove('theming'); });
+      });
+    });
+
+    /* stop the first-load animation from replaying later */
+    setTimeout(function(){ root.classList.remove('boot'); }, 2400);
+  })();
+</script>
+</body>
+</html>
