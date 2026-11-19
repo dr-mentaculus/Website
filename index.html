@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Derek Baker</title>
-<meta name="description" content="Derek Baker, Associate Professor of Philosophy at the Frankfurt School of Finance &amp; Management. Metaethics, the philosophy of action, and bioethics.">
+<meta name="description" content="Derek Baker, Associate Professor of Philosophy at the Frankfurt School of Finance &amp; Management. Expressivism, normative pluralism, desire and self-knowledge.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23172c45'/%3E%3Cpath d='M23 9v46M23 25h32M23 37h32' stroke='%23c5a253' stroke-width='4' fill='none'/%3E%3C/svg%3E">
 <script>
   document.documentElement.classList.add('js');
@@ -175,23 +175,6 @@
   #page-name[data-sec="cv"]{ color:var(--soft); }
   #page-name.previewing{ opacity:.42; }
 
-  .caret{
-    display:inline-block;
-    width:2px;
-    height:.74em;
-    margin-left:.14em;
-    vertical-align:-.04em;
-    background:var(--gold);
-    animation:caret 1.6s ease-in-out infinite;
-  }
-  @keyframes caret{ 0%,100%{ opacity:1; } 50%{ opacity:.12; } }
-
-  /* the caret sweeps across and "writes" the new word */
-  .page.scanning #page-name{ animation:scan-reveal .42s var(--ease) both; }
-  .page.scanning .caret{ animation:caret-sweep .42s var(--ease) both; box-shadow:0 0 12px 1px rgba(197,162,83,.8); }
-  @keyframes scan-reveal{ from{ clip-path:inset(-30% 100% -30% -15%); } to{ clip-path:inset(-30% -15% -30% -15%); } }
-  @keyframes caret-sweep{ from{ transform:translateX(calc(-1 * var(--w, 0px))); } to{ transform:none; } }
-
   /* ==========================================================
      THE T: two horizontal rules + the vertical spine
      ========================================================== */
@@ -231,7 +214,6 @@
     background:var(--gold);
     vertical-align:middle;
   }
-  .readout .clock{ flex:none; opacity:.75; }
 
   .spine{
     grid-column:1;
@@ -619,14 +601,9 @@
   /* ==========================================================
      SMALLER SCREENS
      ========================================================== */
-  @media (max-width:1100px){
-    .readout .clock{ display:none; }
-  }
-  /* narrower: the descriptor moves back into the page; the channel just shows the clock */
+  /* narrower: the descriptor moves back into the page and the channel stays empty */
   @media (max-width:900px){
-    .readout{ justify-content:flex-end; }
     .readout .rt{ display:none; }
-    .readout .clock{ display:inline; }
     .js .section p.role{ position:static; width:auto; height:auto; margin:0 0 22px; overflow:visible; clip:auto; white-space:normal; }
     .photo{ width:146px; margin-left:32px; }
   }
@@ -723,14 +700,13 @@
   -->
   <div class="shell">
     <header>
-      <h1><span class="name">Derek Baker</span> <span class="dash">—</span> <span class="page"><span id="page-name" data-sec="about">About</span><span class="caret" aria-hidden="true"></span></span></h1>
+      <h1><span class="name">Derek Baker</span> <span class="dash">—</span> <span class="page"><span id="page-name" data-sec="about">About</span></span></h1>
     </header>
 
     <div class="rules">
       <div class="rule"><i class="bead"></i></div>
       <div class="readout" aria-hidden="true">
         <span class="rt" id="readout-text">Associate Professor of Philosophy · Frankfurt School of Finance &amp; Management</span>
-        <span class="clock">Frankfurt <span id="clock"></span></span>
       </div>
       <div class="rule"><i class="bead"></i></div>
     </div>
@@ -973,7 +949,7 @@
 
       <!-- ===================== TEACHING ===================== -->
       <section class="section" data-section="teaching" hidden>
-        <p class="role">Management, Philosophy &amp; Economics · Ethics of Applied Data Science</p>
+        <p class="role">Management, Philosophy &amp; Economics · Ethics of Artificial Intelligence &amp; Data Science</p>
 
         <figure class="photo ">
           <div class="frame"><img src="images/teaching-athena.jpg" alt="Athena, detail from an ancient Greek red-figure vase" loading="lazy"></div>
@@ -1079,7 +1055,6 @@
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     var labels = { about:'About', research:'Research', teaching:'Teaching', other:'Other', contact:'Contact', impressum:'Impressum' };
 
-    var page = document.querySelector('h1 .page');
     var pageName = document.getElementById('page-name');
     var readout = document.getElementById('readout-text');
     var sections = document.querySelectorAll('.section');
@@ -1097,41 +1072,11 @@
       return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
     }
 
-    /* ---- Header: the caret sweeps across and writes the new word ---- */
-    function setHeader(label, sec, previewing, animate){
-      var changed = pageName.textContent !== label;
+    /* ---- Header: show the section name ---- */
+    function setHeader(label, sec, previewing){
       pageName.textContent = label;
       pageName.setAttribute('data-sec', sec);
       pageName.classList.toggle('previewing', !!previewing);
-      if (!animate || !changed || !motionOK()) return;
-      page.style.setProperty('--w', pageName.getBoundingClientRect().width + 'px');
-      page.classList.remove('scanning');
-      void page.offsetWidth;
-      page.classList.add('scanning');
-    }
-    page.addEventListener('animationend', function(e){
-      if (e.animationName === 'caret-sweep') page.classList.remove('scanning');
-    });
-
-    /* ---- Readout: the descriptor decodes into place ---- */
-    var decodeFrame;
-    function decode(el, text){
-      cancelAnimationFrame(decodeFrame);
-      if (!motionOK()){ el.textContent = text; return; }
-      var glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/<>+';
-      var start = performance.now();
-      var dur = Math.min(750, 260 + text.length * 6);
-      function frame(now){
-        var p = Math.max(0, Math.min(1, (now - start) / dur));
-        var n = Math.floor(p * text.length);
-        var out = text.slice(0, n);
-        for (var i = n; i < Math.min(text.length, n + 7); i++){
-          out += text.charAt(i) === ' ' ? ' ' : glyphs.charAt((Math.random() * glyphs.length) | 0);
-        }
-        el.textContent = out;
-        if (p < 1) decodeFrame = requestAnimationFrame(frame);
-      }
-      decodeFrame = requestAnimationFrame(frame);
     }
 
     /* ---- Pulse: from the active item's node, along the spine, out along both rules ---- */
@@ -1186,8 +1131,8 @@
         if (on && animate && motionOK()){ void s.offsetWidth; s.classList.add('enter'); }
       });
 
-      setHeader(labels[section], section, false, animate);
-      if (animate) decode(readout, roleOf(section)); else readout.textContent = roleOf(section);
+      setHeader(labels[section], section, false);
+      readout.textContent = roleOf(section);
       if (animate && link) pulse(link);
       document.title = section === 'about' ? 'Derek Baker' : labels[section] + ' — Derek Baker';
     }
@@ -1205,29 +1150,19 @@
 
     /* ---- Hover preview in the header ---- */
     function clearPreview(){
-      if (pageName.classList.contains('previewing')) setHeader(labels[active], active, false, false);
+      if (pageName.classList.contains('previewing')) setHeader(labels[active], active, false);
     }
     navLinks.forEach(function(a){
       function enter(){
         var sec = a.getAttribute('data-section') || 'cv';
         if (sec === active){ clearPreview(); return; }
-        setHeader(a.getAttribute('data-label'), sec, true, true);
+        setHeader(a.getAttribute('data-label'), sec, true);
       }
       a.addEventListener('mouseenter', enter);
       a.addEventListener('focus', enter);
       a.addEventListener('mouseleave', clearPreview);
       a.addEventListener('blur', clearPreview);
     });
-
-    /* ---- Frankfurt clock ---- */
-    var clock = document.getElementById('clock');
-    var fmt = null;
-    try {
-      fmt = new Intl.DateTimeFormat('en-GB', { timeZone:'Europe/Berlin', hour:'2-digit', minute:'2-digit', hourCycle:'h23' });
-    } catch (e) {}
-    function tick(){ if (fmt) clock.textContent = fmt.format(new Date()); }
-    tick();
-    setInterval(tick, 20000);
 
     /* ---- Day / Night ---- */
     var modeButtons = document.querySelectorAll('.mode button');
